@@ -37,8 +37,8 @@
                 @forelse ($carts as $cart)
                     <tr class="border-b border-gray-200 hover:bg-gray-100">
                         <td class="py-3 px-6 text-left">
-                            <img src="{{ $cart->product->picture ? Storage::url($cart->product->picture) : 'https://via.placeholder.com/150' }}"
-                                alt="{{ $cart->product->name }}" width="50">
+                            
+                                <img src="{{ asset('storage/products/' . $cart->product->picture) }}" alt="">
 
                         </td>
                         <td class="py-3 px-6 text-left font-medium">{{ $cart->product->name }}</td>
