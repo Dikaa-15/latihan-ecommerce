@@ -35,7 +35,7 @@
                             <span class="text-gray-800">{{ $data->product->name }}</span>
                             </td>
                             <td class="py-3 px-4 text-gray-600">{{ $data->jumlah }}</td>
-                            <td class="py-3 px-4 text-gray-600">{{ $data->total_harga }}</td>
+                            <td class="py-3 px-4 text-gray-600">Rp. {{ number_format($data->total_harga) }}</td>
                             <td class="py-3 px-4 text-gray-600">{{ $data->payment }}</td>
                             <td class="py-3 px-4 text-gray-600">{{ $data->status }}</td>
                             <td class="py-3 px-4 text-gray-600">{{ $data->user->name }}</td>
