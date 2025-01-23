@@ -12,7 +12,12 @@
 <body>
     <div class="flex h-screen">
 
-        <x-sidebar-user></x-sidebar-user>
+    @if (auth()->user()->role === 'admin')
+        <x-sidebar></x-sidebar>
+       @else
+       <x-sidebar-user></x-sidebar-user>
+
+    @endif
 
             <!-- Menampilkan Error Validasi -->
     @if ($errors->any())

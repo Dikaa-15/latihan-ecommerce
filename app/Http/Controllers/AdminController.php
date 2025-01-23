@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -13,9 +15,11 @@ class AdminController extends Controller
     {
         $users = User::count();
         $products = Product::count();
+        $transactions = Transaction::sum('total_harga');
 
-        return view('admin.home', compact('users', 'products'));
+        return view('admin.home', compact('users', 'products', 'transactions'));
     }
+    
     public function customers()
     {
         $users = User::latest()->paginate(10);

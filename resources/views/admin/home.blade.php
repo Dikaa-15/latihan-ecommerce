@@ -31,7 +31,7 @@
         </div>
         <div class="bg-white shadow p-4 rounded-lg">
           <h2 class="text-sm text-gray-500">Transactions</h2>
-          <p class="text-2xl font-bold mt-2">Rp 75.000.000</p>
+          <p class="text-2xl font-bold mt-2">Rp. {{ number_format($transactions) }}</p>
         </div>
       </section>
 

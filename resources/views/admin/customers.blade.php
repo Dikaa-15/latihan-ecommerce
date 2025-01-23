@@ -31,8 +31,8 @@
                         @forelse ($users as $data)
                         <tr class="border-b hover:bg-gray-50">
                             <td class="py-3 px-4 flex items-center">
-                            <img src="{{ asset('storage/users/' . auth()->user()->profil ) }}" alt="Profile Image" class="w-full h-full object-cover" />
-                            <span class="text-gray-800">{{ $data->name }}</span>
+                            <img src="{{ asset('storage/users/' . $data->profil ) }}" alt="{{ $data->name }}" class="w-10 h-10 rounded-full object-cover" />
+                            <span class="text-gray-800"></span>
                             </td>
                             <td class="py-3 px-4 text-gray-600">{{ $data->name }}</td>
                             <td class="py-3 px-4 text-gray-600">{{ $data->email }}</td>

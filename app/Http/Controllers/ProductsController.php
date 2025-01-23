@@ -65,6 +65,12 @@ class ProductsController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
+
+        if(is_null($product)){
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
+
+        // return new ApiResource(true, 'Detail product', $product);
         
         return view('products.show', compact('product'));
     }

@@ -57,6 +57,7 @@ class AuthController extends Controller
             } elseif($roles === 'user'){
                 return redirect()->intended('home');
             }
+            
             return back()->withErrors([
                 'email' => 'uour record dosnt match with our record'
             ])->onlyInput('email');

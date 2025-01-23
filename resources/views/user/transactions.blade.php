@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Transactions</title>
+    <title>My Transactions</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
 </head>
-
 <body>
     <div class="flex">
-        <x-sidebar></x-sidebar>
 
-
-
-        <section class="mt-8 flex-1 p-6">
+    <x-sidebar-user></x-sidebar-user>
+    
+    <section class="mt-8 flex-1 p-6">
             <h2 class="text-xl font-bold mb-4">Data Transactions</h2>
             @if (session('success'))
                 <div class="mb-4 p-4 text-green-700 bg-green-100 rounded-md">
@@ -50,7 +47,7 @@
                                 <td class="py-3 px-4 text-gray-600">{{ $data->payment }}</td>
 
                                 <td class="py-3 px-4 text-gray-600">{{ $data->user->name }}</td>
-                                <!-- Dropdown untuk Update Status -->
+                                <!-- Dropdown untuk Update Status   -->
                                 <td class="py-3 px-4 text-gray-600">
                                     <form action="{{ route('transactions.updateStatus', $data->id) }}" method="POST">
                                         @csrf
@@ -86,8 +83,8 @@
     </div>
 
 
+
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </body>
-
 </html>

@@ -37,7 +37,8 @@
                 @forelse ($carts as $cart)
                     <tr class="border-b border-gray-200 hover:bg-gray-100">
                         <td class="py-3 px-6 text-left">
-                                <img src="{{ asset('storage/products/' . $cart->product->picture) }}" alt="" width="200">
+                            <img src="{{ asset('storage/products/' . $cart->product->picture) }}" alt=""
+                                width="200">
 
                         </td>
                         <td class="py-3 px-6 text-left font-medium">{{ $cart->product->name }}</td>
@@ -81,40 +82,69 @@
             <h5 class="text-sm font-sans text-gray-700 mr-6">{{ number_format($totalHarga, 0, ',', '.') }}</h5>
         </div>
 
+        @if (session('success'))
+            <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="bg-red-100 text-red-800 px-4 py-2 rounded mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
+
+
 
         <!-- Shipping Details -->
         <div class="mt-10 bg-white shadow rounded-lg p-6 border border-gray-200">
             <h2 class="text-xl font-semibold mb-6">Shipping Details</h2>
-            <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form class="grid grid-cols-1 md:grid-cols-2 gap-6" action="{{ route('checkout.store') }}" method="POST">
+                @csrf
                 <div>
                     <label class="block text-gray-600 mb-2">Full Name</label>
                     <input type="text" name="fullname"
-                        class="w-full border px-4 py-2 rounded focus:ring focus:ring-blue-200">
+                        class="w-full border px-4 py-2 rounded focus:ring focus:ring-blue-200"
+                        value="{{ $user->name }}">
                 </div>
                 <div>
                     <label class="block text-gray-600 mb-2">Email Address</label>
                     <input type="email" name="email"
-                        class="w-full border px-4 py-2 rounded focus:ring focus:ring-blue-200">
+                        class="w-full border px-4 py-2 rounded focus:ring focus:ring-blue-200"
+                        value="{{ $user->email }}">
                 </div>
                 <div>
                     <label class="block text-gray-600 mb-2">Address</label>
                     <input type="text" name="address"
-                        class="w-full border px-4 py-2 rounded focus:ring focus:ring-blue-200">
+                        class="w-full border px-4 py-2 rounded focus:ring focus:ring-blue-200"
+                        value="{{ $user->alamat }}">
                 </div>
                 <div>
                     <label class="block text-gray-600 mb-2">Phone Number</label>
                     <input type="text" name="phone"
-                        class="w-full border px-4 py-2 rounded focus:ring focus:ring-blue-200">
+                        class="w-full border px-4 py-2 rounded focus:ring focus:ring-blue-200"
+                        value="{{ $user->phone_number }}">
                 </div>
                 <div>
                     <label class="block text-gray-600 mb-2">Payment Method</label>
-                    <input type="text" name="payment"
-                        class="w-full border px-4 py-2 rounded focus:ring focus:ring-blue-200">
+                    <select name="payment" class="w-full border px-4 py-2 rounded focus:ring focus:ring-blue-200"
+                        required>
+                        <option value="">-- Select Payment Method --</option>
+                        @foreach ($paymentMethods as $method)
+                            <option value="{{ $method }}">{{ $method }}</option>
+                        @endforeach
+                    </select>
+                    @error('payment')
+                        <span class="text-red-500">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div>
                     <label class="block text-gray-600 mb-2">Upload Transaction</label>
                     <input type="file" name="transaction"
                         class="w-full border px-4 py-2 rounded focus:ring focus:ring-blue-200">
+                        @error('bukti_transfer')
+                        <span class="text-red-500">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="col-span-1 md:col-span-2">
                     <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700">

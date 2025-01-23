@@ -41,7 +41,7 @@
                             <form action="{{ route('add-cart', ['id' => '$product_id']) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="quantity" value="1"> <!-- Default quantity -->
+                                <input type="hidden" name="quantity" value="1"> Default quantity
                                 <button id="openModal" class="block w-full md:w-[30%] lg:w-[20%] xl:w-[10%] text-white bg-blue-500 p-4 rounded-lg">
                                    Add to cart
                                 </button>

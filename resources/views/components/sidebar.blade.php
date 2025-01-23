@@ -31,7 +31,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="flex items-center text-gray-600 px-4 py-2 hover:bg-gray-100">
+            <a href="{{ route('transactions.index') }}" class="flex items-center text-gray-600 px-4 py-2 hover:bg-gray-100">
               <span class="material-icons">attach_money</span>
               <span class="ml-2">Data Transaction</span>
             </a>
