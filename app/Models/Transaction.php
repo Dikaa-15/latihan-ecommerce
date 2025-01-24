@@ -16,5 +16,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+    public function cart()
+    {
+        return $this->belongsTo(Product::class, 'cart_id');
+    }
+
    
 }

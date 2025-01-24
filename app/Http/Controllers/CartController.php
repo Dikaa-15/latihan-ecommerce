@@ -24,7 +24,11 @@ class CartController extends Controller
             return $carts->product->price * $carts->jumlah;
         });
 
-        return view('carts.index', compact('carts', 'totalHarga', 'user', 'paymentMethods'));
+        // Mengirimkan produk pertama dari keranjang (jika ada) ke view
+        $product = $carts->first()->product ?? null;
+        
+
+        return view('carts.index', compact('carts', 'totalHarga', 'user', 'paymentMethods', 'product'));
     }
 
 
@@ -38,23 +42,68 @@ class CartController extends Controller
         ]);
 
         $product = Product::findOrFail($request->product_id);
+
+
         $totalHarga = $product->price * $request->quantity;
 
-        
+
         Cart::updateOrCreate(
-            ['user_id' => Auth::id(), 'product_id' => $request->product_id ],
+            ['user_id' => Auth::id(), 'product_id' => $request->product_id],
             ['quantity' => $request->quantity, 'jumlah' => 1, 'total_harga' => $totalHarga]
         );
 
         return redirect()->route('cart.index')->with('success', 'Product added to cart!');
     }
 
+    public function store(Request $request)
+    {
+        // Validasi input form
+        $request->validate([
+            'product_id' => 'required|integer|exists:products,id',
+            'cart_id' => 'required|integer|exists:carts,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'alamat' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:15',
+            'payment' => 'required|string',
+            'bukti_transfer' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048' // Validasi untuk bukti transfer
+        ]);
+
+        // Simpan file bukti transfer jika ada
+        $buktiTransferPath = null;
+        if ($request->hasFile('bukti_transfer')) {
+            $buktiTransferPath = $request->file('bukti_transfer')->store('bukti_transfer', 'public');
+        }
+
+        $cart_id = Auth::user();
+
+        // Buat data transaksi
+        Transaction::create([
+            'user_id' => auth()->id(), // ID user yang sedang login
+            'product_id' => $request->product_id,
+            'cart_id' => $request->cart_id, // Jika transaksi mencakup lebih dari 1 produk, sesuaikan logikanya
+            'jumlah' => 1,
+            'name' => $request->name, // Default jumlah, bisa diubah sesuai kebutuhan
+            'email' => $request->email, // Default jumlah, bisa diubah sesuai kebutuhan
+            'alamat' => $request->alamat, // Default jumlah, bisa diubah sesuai kebutuhan
+            'phone_number' => $request->phone_number, // Default jumlah, bisa diubah sesuai kebutuhan
+            'total_harga' => 0, // Total harga, isi sesuai dengan logika kalkulasi
+            'payment' => $request->payment,
+            'status' => 'pending', // Default status
+            'bukti_transfer' => $buktiTransferPath,
+        ]);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('cart.index')->with('success', 'Transaksi berhasil dibuat!');
+    }
+
     public function update(Request $request, $id)
     {
-        $cart = Transaction::findOrFail($id);
-        $request->validate(['quantity' => 'required|integer|min:1']);
+        $cart = Cart::findOrFail($id);
 
-        $cart->update(['quantity' => $request->quantity]);
+        $request->validate(['jumlah' => 'required|integer|min:1']);
+
+        $cart->update(['jumlah' => $request->jumlah]);
 
         return redirect()->route('cart.index')->with('success', 'Cart updated!');
     }

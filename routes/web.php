@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\TransactionsController;
+use App\Models\Transaction;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,6 +18,7 @@ Route::get('/home', [ProductsController::class, 'cards'])->name('home');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'cards'])->name('admin');
+
     Route::get('/customers', [AdminController::class, 'customers'])->name('customers');
     Route::post('/customers', [AdminController::class, 'deleteCustomers'])->name('deleteCustomers');
     Route::resource('/products', ProductsController::class);
@@ -32,12 +34,13 @@ Route::post('/profil', [UserController::class, 'profilUpdate'])->name('profil-up
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/profil-user', [UserController::class, 'profil'])->name('profil-user');
     Route::post('/profil-user', [UserController::class, 'profilUpdate'])->name('profil-update');
+    Route::get('/my-transactions', [TransactionsController::class, 'getMyTrasactions'])->name('my-transactions');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     //     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-    //     Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
     // Route::get('/cart', [CartController::class, 'index'])->name('checkout.index'); // Menampilkan form checkout
     Route::post('/cart', [CartController::class, 'store'])->name('checkout.store'); // Memproses form checkout
     Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');

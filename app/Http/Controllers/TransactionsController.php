@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionsController extends Controller
 {
@@ -12,6 +13,16 @@ class TransactionsController extends Controller
         $transactions = Transaction::with(['user', 'product'])->get();
 
         return view('Transactions.index', compact('transactions'));
+    }
+    public function getMyTrasactions()
+    {
+        $transactions = Transaction::with('product')
+        ->where('user_id', Auth::id())
+        ->get();
+
+        $user = Auth::user();
+
+        return view('user.transactions', compact('transactions', 'user'));
     }
 
     public function updateStatus(Request $request, $id)

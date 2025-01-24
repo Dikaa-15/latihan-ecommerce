@@ -14,7 +14,7 @@
             <span class="ml-3">Back to Store</span>
         </a>
         <!-- Transaction -->
-        <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-100 hover:text-blue-700 rounded">
+        <a href="{{ route('my-transactions') }}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-100 hover:text-blue-700 rounded">
             <span class="material-icons">receipt</span>
             <span class="ml-3">Transaction</span>
         </a>

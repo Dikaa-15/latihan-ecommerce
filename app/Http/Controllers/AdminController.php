@@ -16,8 +16,9 @@ class AdminController extends Controller
         $users = User::count();
         $products = Product::count();
         $transactions = Transaction::sum('total_harga');
+        $latestTransaction = Transaction::with(['user', 'product'])->latest()->paginate(10);
 
-        return view('admin.home', compact('users', 'products', 'transactions'));
+        return view('admin.home', compact('users', 'products', 'transactions', 'latestTransaction'));
     }
     
     public function customers()
@@ -25,6 +26,7 @@ class AdminController extends Controller
         $users = User::latest()->paginate(10);
         return view('admin.customers', compact('users'));
     }
+
     public function deleteCustomer($id)
     {
         $user = User::find($id);
