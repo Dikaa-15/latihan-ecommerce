@@ -67,7 +67,7 @@
                             @error('product_id')
                                 <span class="text-red-500">Id Product tidak ada</span>
                             @enderror
-                            <input type="hidded" name="cart_id" value="{{ $cart->id }}">
+                            <!-- <input type="hidded" name="cart_id" value="{{ $cart->id }}"> -->
                             @error('cart_id')
                                 <span class="text-red-500">Id Cart tidak ada</span>
                             @enderror
@@ -121,7 +121,8 @@
             <h2 class="text-xl font-semibold mb-6">Shipping Details</h2>
             <form class="grid grid-cols-1 md:grid-cols-2 gap-6" action="{{ route('checkout.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <input type="hidden" name="product_id" value="{{ $product->id }}"> 
+                <!-- <input type="hidden" name="cart_id" value="{{ $cart->id }}">  -->
                 <div>
                     <label class="block text-gray-600 mb-2">Name</label>
                     <input type="text" name="name"
