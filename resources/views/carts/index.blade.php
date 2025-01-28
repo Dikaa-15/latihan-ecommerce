@@ -47,7 +47,7 @@
                     </td>
                     <td class="py-3 px-6 text-center">
                         <div class="flex justify-center items-center">
-                            <form action="#" method="POST" class="flex items-center space-x-2">
+                            <form action="{{ route('cart.update', $cart->product->id) }}" method="POST" class="flex items-center space-x-2">
                                 <button type="button"
                                     class="text-gray-600 px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">-</button>
                                 <input type="number" name="quantity" value="{{ $cart->jumlah }}" min="1"
