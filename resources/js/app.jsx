@@ -25,6 +25,8 @@ import Customers from './Customers/Customers';
 import StoreCustomer from './Customers/CustomersCreate';
 import CustomerUpdate from './Customers/CustomerUpdate';
 import DashboardAdmin from './Pages/Admin';
+import CartsAdmin from './Carts/Carts';
+
 
 const App = () => (
     <Router>
@@ -54,6 +56,8 @@ const App = () => (
                 <Route path="/customers" element={<Customers />} />
                 <Route path="/customers/create" element={<StoreCustomer />} />
                 <Route path="/customers/edit/:id" element={<CustomerUpdate />} />
+                <Route path="/carts" element={<CartsAdmin />} />
+
             </Route>
 
             {/* <coba/> */}
