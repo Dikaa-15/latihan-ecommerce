@@ -12,7 +12,9 @@ class UserController extends Controller
     public function profil()
     {
         $user = Auth::user();
-        return response()->json($user, 201);
+        return response()->json([
+            'user' => $user 
+        ], 200);
         // return view('user.profil', compact('user'));
     }
 
