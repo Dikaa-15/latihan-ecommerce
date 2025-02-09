@@ -29,9 +29,21 @@ class CartController extends Controller
         $product = $carts->first()->product ?? null;
 
 
-        return view('carts.index', compact('carts', 'totalHarga', 'user', 'paymentMethods', 'product'));
+        return response()->json([
+            'user' => $user,
+            'product' => $product,
+            'carts' => $carts,
+            'total_harga' => $totalHarga,
+            'payment_method' => $paymentMethods
+        ]);
+        // return view('carts.index', compact('carts', 'totalHarga', 'user', 'paymentMethods', 'product'));
     }
-
+    public function carts()
+    {
+        $carts = Cart::
+        with('user')->with('product')->latest()->paginate(10);
+        return response()->json($carts, 200);
+    }
 
     public function add(Request $request)
     {
