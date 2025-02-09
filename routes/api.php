@@ -47,6 +47,10 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
 Route::get('/cards-admin', [AdminController::class, 'cards']);
 
+Route::group([], function() {
+    Route::get('/carts', [CartController::class, 'carts']);
+});
+
 Route::put('products/{id}', [ProductsController::class, 'update']);
 
 Route::post('/register', [AuthController::class, 'register'])->name('register');
