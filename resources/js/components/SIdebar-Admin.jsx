@@ -22,7 +22,7 @@ const SidebarAdmin = () => {
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('cart.index') }}" class="flex items-center text-gray-600 px-4 py-2 hover:bg-gray-100">
+                            <a href="/carts" class="flex items-center text-gray-600 px-4 py-2 hover:bg-gray-100">
                                 {/* <span class="material-icons">category</span> */}
                                 <span class="ml-2">Data Cart</span>
                             </a>
