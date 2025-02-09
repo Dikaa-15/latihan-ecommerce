@@ -13,7 +13,6 @@
 </head>
 
 <body>
-
 </body>
 <x-navbar></x-navbar>
 
@@ -59,6 +58,9 @@
 <x-sub-footer></x-sub-footer>
 
 <x-footer></x-footer>
+
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </body>
