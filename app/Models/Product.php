@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -15,5 +16,11 @@ class Product extends Model
     public function Cart()
     {
         return $this->hasMany(Cart::class, 'product_id');
+    }
+
+    // Fungsi untuk menyimpan path gambar
+    public function getPictureUrlAttribute()
+    {
+        return Storage::url($this->picture);
     }
 }
