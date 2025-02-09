@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Login = () => {
-    const [formData, setFormData] = useState({ email: '', password: ''});
+    const [formData, setFormData] = useState({ email: '', password: '' });
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -13,15 +13,26 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Kirim request login ke backend Laravel
             const response = await axios.post('/api/login', formData, { withCredentials: true });
+            const { token, user } = response.data;
+
+            localStorage.setItem('token', token);
+            localStorage.setItem('role', user.role);
+
             alert('Login successful');
+
+            if (user.role === 'admin') {
+                navigate('/products'); // Redirect ke halaman products jika admin
+            } else {
+                navigate('/'); // Redirect ke halaman lain untuk user biasa
+            }
         } catch (error) {
             console.error('Login failed:', error.response?.data || error.message);
             alert('Login failed');
         }
     };
-    
+
+
 
     // Fungsi untuk navigasi ke halaman register
     const goToRegister = () => {
@@ -51,7 +62,7 @@ const Login = () => {
                     />
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
+                        className=" "
                     >
                         Login
                     </button>
@@ -65,7 +76,7 @@ const Login = () => {
             </div>
         </div>
     );
-    
+
 }
 
 export default Login;
