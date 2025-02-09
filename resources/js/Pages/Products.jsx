@@ -131,7 +131,7 @@ const Products = () => {
                         {products.map( (product) => (
                             <tr class="border-b hover:bg-gray-50">
                             <td class="py-3 px-4 flex items-center">
-                                <img class="w-14 h-14 rounded-full mr-3" src={`http://localhost:8000/storage/${product.picture}`} alt="Profile" />
+                                <img class="w-18 h-18 rounded-full mr-3" src={`http://localhost:8000/storage/${product.picture}`} alt="Profile" />
                                 <span class="text-gray-800"></span>
                             </td>
                             <td class="py-3 px-4 text-gray-600">{product.name}</td>
