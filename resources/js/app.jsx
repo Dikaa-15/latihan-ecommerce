@@ -24,6 +24,7 @@ import GetCustomers from './Customers/Customers';
 import Customers from './Customers/Customers';
 import StoreCustomer from './Customers/CustomersCreate';
 import CustomerUpdate from './Customers/CustomerUpdate';
+import DashboardAdmin from './Pages/Admin';
 
 const App = () => (
     <Router>
@@ -44,6 +45,7 @@ const App = () => (
 
             {/* Hanya bisa diakses oleh admin */}
             <Route element={<ProtectedRoute role="admin" />}>
+                <Route path="/dashboard-admin" element={<DashboardAdmin />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/create" element={<StoreProducts />} />
