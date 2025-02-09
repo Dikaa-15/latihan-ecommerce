@@ -10,7 +10,7 @@ const SidebarAdmin = () => {
                 <nav class="mt-4">
                     <ul class="space-y-4">
                         <li>
-                            <a href="/" class="flex items-center text-blue-500 font-medium px-4 py-2 hover:bg-blue-50">
+                            <a href="/dashboard-admin" class="flex items-center text-blue-500 font-medium px-4 py-2 hover:bg-blue-50">
                                 {/* <span class="material-icons">dashboard</span> */}
                                 <span class="ml-2">Dashboard</span>
                             </a>
