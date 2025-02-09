@@ -57,7 +57,7 @@ const ProductEdit = () => {
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-semibold text-center mb-6">Edit Product</h1>
-            <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto mb-6">
+            <form key={id} onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto mb-6">
                 <div className="mb-4">
                     <input 
                         type="text" 
