@@ -20,9 +20,9 @@ class AdminController extends Controller
         // ->latest()->paginate(10)
 
         return response()->json([
-            'users' => $users,
+            'Users' => $users,
             'Products' => $products,
-            'Transactions Total' => $transactions,
+            'Transactions_Total' => $transactions,
             'Latest Transactions' => $latestTransaction
         ]);
 
