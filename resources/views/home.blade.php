@@ -7,18 +7,22 @@
     <title>Home Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+
+    @viteReactRefresh
+    @vite(['resources/js/app.jsx'])
 </head>
 
 <body>
-
-
 </body>
 <x-navbar></x-navbar>
 
-<x-carousel class="mx-10 mt-10"></x-carousel>
+<x-carousel></x-carousel>
 
 <x-categorys></x-categorys>
 
+<div id="app"></div>
+
+<!-- Products Section -->
 <section class="container mx-auto py-8">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-semibold">Populer Product</h2>
@@ -44,7 +48,7 @@
 
 
     </div>
-</section>
+</section> 
 
 <form action="{{ route('logout') }}" method="POST">
     @csrf
@@ -54,6 +58,9 @@
 <x-sub-footer></x-sub-footer>
 
 <x-footer></x-footer>
+
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </body>

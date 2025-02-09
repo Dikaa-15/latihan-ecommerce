@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Log;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Transaction;
@@ -132,5 +133,58 @@ class CartController extends Controller
             // Tangani error dan tampilkan pesan gagal
             return redirect()->route('home')->with('error', 'Checkout gagal! Silakan coba lagi.');
         }
+    }
+
+    // new version with api react js
+    public function addToCart(Request $request)
+    {
+        $user = Auth::user();
+        $product = Product::findOrFail($request->product_id);
+
+        // Cek Apakah product sudah ada dikeranjang
+        $cartItem = Cart::where('user_id', $user->id)
+            ->where('product_id', $product->id)
+            ->first();
+
+        if ($cartItem) {
+            // jika product sudah ada, tambahkan kuantitasnya
+            $cartItem->jumlah += $request->quantity;
+            $cartItem->save();
+        } else {
+            // Jika product belum ada, tambahkan product ke keranjang
+            Cart::create([
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+                'jumlah' => $request->quantity
+            ]);
+        }
+        return response()->json(['message' => 'Products Added to cart successfully']);
+    }
+
+    // menampilkan keranjang pengguna
+    public function showCart()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        $cartItem = Cart::where('user_id', $user->id)
+            ->whereHas('product')
+            ->with('product')
+            ->get();
+
+        // Debugging: Periksa hasilnya
+        \Log::info('Cart Items:', $cartItem->toArray());
+
+        return response()->json(['cart_items' => $cartItem]);
+    }
+
+    // Menghapus product dari keranjang
+    public function removeFromCart($id)
+    {
+        $cartItem = Cart::findOrFail($id);
+        $cartItem->delete();
+
+        return response()->json(['message' => 'Product Remove from cart successfully']);
     }
 }

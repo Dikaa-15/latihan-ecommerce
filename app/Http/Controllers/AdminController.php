@@ -16,27 +16,19 @@ class AdminController extends Controller
         $users = User::count();
         $products = Product::count();
         $transactions = Transaction::sum('total_harga');
-        $latestTransaction = Transaction::with(['user', 'product'])->latest()->paginate(10);
+        $latestTransaction = Transaction::with(['user', 'product']);
+        // ->latest()->paginate(10)
 
-        return view('admin.home', compact('users', 'products', 'transactions', 'latestTransaction'));
+        return response()->json([
+            'users' => $users,
+            'Products' => $products,
+            'Transactions Total' => $transactions,
+            'Latest Transactions' => $latestTransaction
+        ]);
+
+        // return view('admin.home', compact('users', 'products', 'transactions', 'latestTransaction'));
     }
-    
-    public function customers()
-    {
-        $users = User::latest()->paginate(10);
-        return view('admin.customers', compact('users'));
-    }
 
-    public function deleteCustomer($id)
-    {
-        $user = User::find($id);
-
-        Storage::delete('public/users/' . basename($user->profil));
-
-        $user->delete();
-
-        return view('admin.customers');
-    }
     public function profil()
     {
         $user = Auth::user();
@@ -77,5 +69,4 @@ class AdminController extends Controller
 
         return redirect()->route('profil');
     }
-    
 }

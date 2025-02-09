@@ -13,6 +13,15 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('/{any}', function () {
+    return view('welcome');
+})->where('any', '.*');
+
+// // Route untuk mengarahkan ke aplikasi React
+// Route::get('/{any}', function () {
+//     return view('app'); // Buat view khusus untuk React
+// })->where('any', '.*'); // Ini akan menangkap semua rute kecuali API
+
 
 Route::get('/home', [ProductsController::class, 'cards'])->name('home');
 
@@ -50,10 +59,7 @@ Route::get('/detail-produk/{id}', [ProductsController::class, 'show'])->name('de
 Route::post('/detail-produk{id}', [CartController::class, 'add'])->name('add-cart');
 
 
-Route::get('/register', [AuthController::class, 'registerForm'])->name('register')->middleware('guest');
-Route::post('/register', [AuthController::class, 'register']);
+// Route::get('/register', [AuthController::class, 'registerForm'])->name('register')->middleware('guest');
 
-Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+// Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

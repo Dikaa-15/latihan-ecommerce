@@ -15,10 +15,10 @@ class ProductsController extends Controller
 
     public function index()
     {
-        $products = Product::latest()->paginate(10);
-        
-    return view('products.index', compact('products'));
-    return new ApiResource(true, 'List data Products', $products);    
+        $products = Product::all();
+
+        // return view('products.index', compact('products'));
+        return response()->json($products, 200);
     }
     public function cards()
     {
@@ -39,90 +39,71 @@ class ProductsController extends Controller
             'quantity' => 'required|integer'
         ]);
 
-        if($validator->fails()){
-            return response()->json(['error' => $validator->errors()], 422);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
 
-        $picture = $request->file('picture');
-        $picture->storeAs('public/products', $picture->hashName());
+        // Proses upload gambar
+        $imagePath = $request->file('picture')->store('products', 'public');
 
-        $post = Product::create([
+        // Menyimpan data produk ke database
+        $product = Product::create([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
             'quantity' => $request->quantity,
-            'picture' => $picture->hashName()
+            'picture' => $imagePath
         ]);
 
-        return new ApiResource(true, 'Data product berhasil ditambahkan', $post);
-
-        return redirect()->route('products.index')->with(['success' => 'Data berhasil ditambahkan']);
-
-        return back()->withErrors([
-            'name' => 'Tidak dapat menambahkan data baru'
-        ])->onlyInput('name');
+        return response()->json($product, 201);
     }
+    // Method untuk menampilkan produk
     public function show($id)
     {
-        $product = Product::find($id);
-
-        if(is_null($product)){
-            return response()->json(['error' => 'Data tidak ditemukan'], 404);
-        }
-
-        // return new ApiResource(true, 'Detail product', $product);
-        
-        return view('products.show', compact('product'));
+        $product = Product::findOrFail($id);
+        return response()->json($product);
     }
+
     public function edit(Product $product)
     {
         return view('products.edit', compact('product'));
     }
-    public function update(Request $request,$id)
+    // Method untuk memperbarui produk
+    public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'picture' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'price' => 'required|numeric',
             'description' => 'required|string|max:255',
             'quantity' => 'required|integer'
         ]);
 
-        if($validator->fails()){
-            return response()->json($validator->errors(), 402);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
 
-        if($request->hasFile('picture'))
-        {
-            // upload new image
-            $picture = $request->file('picture');
-            $picture->storeAs('public/products', $picture->hashName());
+        $product = Product::findOrFail($id);
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->description = $request->description;
+        $product->quantity = $request->quantity;
 
-            // delete old image
-            Storage::delete('public/products/' . basename($product->picture));
-
-            $product->update([
-            'name' => $request->name,
-            'price' => $request->price,
-            'description' => $request->description,
-            'quantity' => $request->quantity,
-            'picture' => $picture->hashName()
-            ]);
-        } else {
-            $product->update([
-            'name' => $request->name,
-            'price' => $request->price,
-            'description' => $request->description,
-            'quantity' => $request->quantity,
-            ]);
+        if ($request->hasFile('picture')) {
+            // Hapus gambar lama jika ada
+            if ($product->picture) {
+                Storage::delete('public/' . $product->picture);
+            }
+            // Simpan gambar baru
+            $imagePath = $request->file('picture')->store('products', 'public');
+            $product->picture = $imagePath;
         }
 
-        return new ApiResource(true, 'Product berhasil diupdate', $product);
+        $product->save();
 
-        return redirect()->route('products.index');
+        return response()->json($product, 200);
     }
+    
     public function destroy($id)
     {
         $product = Product::find($id);
@@ -131,7 +112,7 @@ class ProductsController extends Controller
         $product->delete();
 
         return new ApiResource(true, 'data berhasil dihapus', null);
+        
         return redirect()->route('products.index');
     }
-
 }

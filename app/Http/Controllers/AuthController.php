@@ -10,10 +10,10 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 class AuthController extends Controller
 {
     use ValidatesRequests;
-    public function registerForm()
-    {
-        return view('auth.register');
-    }
+    // public function registerForm()
+    // {
+    //     return view('auth.register');
+    // }
     public function register(Request $request)
     {
         $this->validate($request, [
@@ -27,42 +27,62 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
-            'phone_number' => $request->phone_number, 
+            'phone_number' => $request->phone_number,
             'role' => 'user'
         ]);
+        // Auth::login($user);
+        // $request->session()->regenerate();
 
-        Auth::login($user);
-        $request->session()->regenerate();
-
-        return redirect()->route('home');
+        // return redirect()->route('home');
+        return response()->json(['message' => 'Register Successfull', 'data' => $user], 201);
     }
-    public function loginForm()
-    {
-        return view('auth.login');
-    }
+    // public function loginForm()
+    // {
+    //     return view('auth.login');
+    // }
     public function login(Request $request)
     {
-        $credential = $request->validate([
+        $this->validate($request, [
             'email' => 'required|email|max:255',
             'password' => 'required|min:8|max:255'
         ]);
 
-        if(Auth::attempt($credential)){
-            $request->session()->regenerate();
 
-            $roles = Auth::user()->role;
-            
-            if($roles === 'admin'){
-                return redirect()->intended('admin');
-            } elseif($roles === 'user'){
-                return redirect()->intended('home');
-            }
-            
-            return back()->withErrors([
-                'email' => 'uour record dosnt match with our record'
-            ])->onlyInput('email');
-            
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $user = Auth::user();
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'message' => 'Login Successful',
+                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->role
+                ]
+            ], 200);
         }
+
+        return response()->json(['message' => 'Invalid Credential'], 401);
+
+        // if(Auth::attempt($credential)){
+        //     $request->session()->regenerate();
+
+        //     $roles = Auth::user()->role;
+
+        //     if($roles === 'admin'){
+        //         return response()->json(['message' => 'Welcome Admin']);
+        //     } elseif($roles === 'user'){
+        //         return response()->json(['message' => 'Welcome user']);
+        //     }
+
+        //     return response()->json(['message' => 'Invalid Credential'], 404);            
+        //     // return back()->withErrors([
+        //     //     'email' => 'uour record dosnt match with our record'
+        //     // ])->onlyInput('email');
+
+        // }
 
     }
 
@@ -71,10 +91,6 @@ class AuthController extends Controller
 
         Auth::logout();
 
-        $request->session()->invalidate();
-
-        return redirect()->route('login');
-
+        return response()->json(['message' => 'Succefully Logout']);
     }
-    
 }

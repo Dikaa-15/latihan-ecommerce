@@ -1,4 +1,4 @@
-<section class="px-6 py-10">
+<section class="px-10 py-10">
     <!-- Section Title -->
     <h2 class="text-2xl font-bold mb-6">Categories</h2>
     <!-- Categories Grid -->
