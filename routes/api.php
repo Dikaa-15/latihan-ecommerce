@@ -24,6 +24,7 @@ Route::get('/profil-user', [UserController::class, 'profil']);
 
 Route::get('/cards', [ProductsController::class, 'index']);
 
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('detail-products/{id}', [ProductsController::class, 'detail']);
     // route untuk menambahkan produk ke keranjang
@@ -44,6 +45,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     
 });
 
+Route::get('/cards-admin', [AdminController::class, 'cards']);
 
 Route::put('products/{id}', [ProductsController::class, 'update']);
 
